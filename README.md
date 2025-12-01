@@ -1,2 +1,2 @@
-# meidcancer
+# medicancer
 Médicaments remboursables pour la catégorie des Cancereux
