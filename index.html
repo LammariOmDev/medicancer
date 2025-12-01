@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Médicaments Remboursables</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    <style>
+        body { 
+            padding: 20px; 
+            background-color: #f8f9fa; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.1); 
+        }
+
+        /* --- TON STYLE PERSONNALISÉ --- */
+        h1 { 
+            margin-bottom: 5px; 
+            color: #2c3e50; 
+            font-size: 20px; 
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .signature {
+            font-size: 11px; 
+            color: #7f8c8d; 
+            margin-bottom: 25px; 
+            font-style: italic;
+            border-bottom: 2px solid #3498db; 
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* Ajustements pour le tableau DataTables */
+        table.dataTable thead { background-color: #3498db; color: white; }
+        .dataTables_wrapper { font-size: 14px; }
+        
+        #loading { font-size: 18px; color: #666; text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Médicaments Remboursables pour les Cancereux</h1>
+    <div class="signature">By LammariOmDev</div>
+
+    <div id="loading">
+        <div class="spinner-border text-primary" role="status"></div>
+        <br>Chargement et traitement des 7200 lignes...
+    </div>
+
+    <div class="table-responsive">
+        <table id="monTableau" class="table table-striped" style="width:100%; display:none;">
+            <thead>
+                <tr id="table-headers"></tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+<script>
+    const excelFile = 'cancereux.xlsx';
+
+    async function loadExcel() {
+        try {
+            const response = await fetch(excelFile);
+            const arrayBuffer = await response.arrayBuffer();
+            const data = new Uint8Array(arrayBuffer);
+            const workbook = XLSX.read(data, {type: 'array'});
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            
+            // Conversion en JSON (Objets) au lieu de HTML direct
+            // Cela nous permet de mieux contrôler les données pour la pagination
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+            if (jsonData.length > 0) {
+                // 1. Créer les en-têtes (La première ligne du Excel)
+                const headers = jsonData[0];
+                const headerRow = document.getElementById('table-headers');
+                headers.forEach(header => {
+                    const th = document.createElement('th');
+                    th.textContent = header || "Colonne vide"; // Sécurité si titre vide
+                    headerRow.appendChild(th);
+                });
+
+                // 2. Créer le corps du tableau (Toutes les autres lignes)
+                const body = document.getElementById('table-body');
+                // On commence à i=1 pour sauter la ligne des titres
+                for (let i = 1; i < jsonData.length; i++) {
+                    const rowData = jsonData[i];
+                    // On vérifie que la ligne n'est pas totalement vide
+                    if (rowData.length > 0) {
+                        const tr = document.createElement('tr');
+                        headers.forEach((_, index) => { // On utilise l'index des headers pour aligner les colonnes
+                            const td = document.createElement('td');
+                            // Si la case est vide, on met un texte vide
+                            td.textContent = (rowData[index] !== undefined) ? rowData[index] : ""; 
+                            tr.appendChild(td);
+                        });
+                        body.appendChild(tr);
+                    }
+                }
+
+                // 3. Activer DataTables (Pagination + Recherche)
+                $('#monTableau').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json' // Met tout en français
+                    },
+                    pageLength: 20, // Nombre de lignes par page par défaut
+                    lengthMenu: [10, 20, 50, 100], // Choix pour l'utilisateur
+                    order: [] // Pas de tri initial forcé
+                });
+
+                // 4. Afficher le tableau et cacher le chargement
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('monTableau').style.display = 'table';
+            }
+
+        } catch (error) {
+            console.error("Erreur:", error);
+            document.getElementById('loading').innerHTML = "<span style='color:red'>Erreur de chargement. Vérifiez le fichier Excel.</span>";
+        }
+    }
+
+    loadExcel();
+</script>
+
+</body>
+</html>
