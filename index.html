@@ -39,7 +39,16 @@
             padding-bottom: 10px;
             display: inline-block;
         }
+		.signature a {
+            color: inherit; /* Garde la même couleur grise que le texte */
+            text-decoration: none; /* Enlève le soulignement par défaut */
+            font-weight: bold; /* Met le nom en gras */
+            transition: color 0.3s; /* Animation douce */
+        }
 
+        .signature a:hover {
+            color: #3498db; /* Devient bleu quand on passe la souris dessus */
+        }
         /* Ajustements pour le tableau DataTables */
         table.dataTable thead { background-color: #3498db; color: white; }
         .dataTables_wrapper { font-size: 14px; }
@@ -51,7 +60,7 @@
 
 <div class="container">
     <h1>Médicaments Remboursables - Maladies Cancéreuses</h1>
-    <div class="signature">By LammariOmDev</div>
+    <div class="signature">By <a href="https://facebook.com/LammariOmDev" target="_blank">LammariOmDev</a></div>
 
     <div id="loading">
         <div class="spinner-border text-primary" role="status"></div>
@@ -144,6 +153,7 @@
 </body>
 
 </html>
+
 
 
 
