@@ -25,7 +25,7 @@
         h1 { 
             margin-bottom: 5px; 
             color: #2c3e50; 
-            font-size: 20px; 
+            font-size: 26px; 
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -49,6 +49,32 @@
         .signature a:hover {
             color: #3498db; /* Devient bleu quand on passe la souris dessus */
         }
+		/* --- 3. DESIGN DES CHAMPS (RECHERCHE + MENU DÉROULANT) --- */
+        
+        /* Champ de recherche (Search) */
+        .dataTables_filter input {
+            border: 2px solid #3498db !important; 
+            border-radius: 5px; 
+            padding: 5px 10px;
+            background-color: #fcfcfc;
+        }
+        .dataTables_filter input:focus {
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.4); 
+            outline: none;
+        }
+
+        /* NOUVEAU : Menu déroulant (Afficher X entrées) */
+        .dataTables_length select {
+            border: 2px solid #3498db !important; /* Même bordure bleue */
+            border-radius: 5px;
+            padding: 5px;
+            background-color: #fcfcfc;
+        }
+        .dataTables_length select:focus {
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.4); /* Même effet lumineux */
+            outline: none;
+        }
+        /* --------------------------------------------------------- */
         /* Ajustements pour le tableau DataTables */
         table.dataTable thead { background-color: #3498db; color: white; }
         .dataTables_wrapper { font-size: 14px; }
@@ -60,7 +86,7 @@
 
 <div class="container">
     <h1>Médicaments Remboursables - Maladies Cancéreuses</h1>
-    <div class="signature">By <a href="https://facebook.com/LammariOmDev" target="_blank">LammariOmDev</a></div>
+    <div class="signature">By <a href="https://facebook.com/LammariOmDev" target="_blank">LammariOmDev®</a></div>
 
     <div id="loading">
         <div class="spinner-border text-primary" role="status"></div>
@@ -153,6 +179,7 @@
 </body>
 
 </html>
+
 
 
 
