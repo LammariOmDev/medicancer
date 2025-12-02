@@ -34,15 +34,14 @@
         }
 /* --- NOUVEAU : La ligne grise avec ombre --- */
         hr.custom-line {
-            border: 0; 
-            height: 1px; /* Épaisseur de la ligne */
-            background-color: #bdc3c7; /* Couleur grise */
-            width: 100%; /* Largeur totale */
+			border: 0; 
+            height: 2px; /* Plus épaisse pour être visible */
+            background-color: #95a5a6 !important; /* Gris plus foncé */
+            opacity: 1 !important; /* IMPORTANT : Annule la transparence de Bootstrap */
+            width: 100%; 
             margin-top: 5px;
             margin-bottom: 15px;
-            opacity: 1;
-            /* L'ombre dégradée en dessous */
-            box-shadow: 0 6px 6px -2px rgba(0,0,0,0.15); 
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2); /* Ombre plus visible */
         }
         /* ------------------------------------------ */
         .signature {
@@ -200,6 +199,7 @@
 </body>
 
 </html>
+
 
 
 
