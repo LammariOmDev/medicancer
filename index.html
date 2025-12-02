@@ -63,9 +63,27 @@
             box-shadow: 0 0 8px rgba(52, 152, 219, 0.4); 
             outline: none;
         }
+        
+        /* --- NOUVEAU : INVERSION GAUCHE / DROITE --- */
+        
+        /* 1. On inverse l'ordre de la ligne d'en-tête du tableau */
+        .dataTables_wrapper .row:first-child {
+            flex-direction: row-reverse; 
+        }
 
+        /* 2. On aligne la recherche à GAUCHE */
+        .dataTables_filter {
+            text-align: left !important;
+        }
+
+        /* 3. On aligne la liste déroulante à DROITE */
+        .dataTables_length {
+            text-align: right !important;
+        }
+        
+        /* ------------------------------------------- */
         /* --------------------------------------------------------- */
-        /* Ajustements pour le tableau DataTables */
+        /* Ajustements pour le tableau DataTables couleurs du tableau*/
         table.dataTable thead { background-color: #3498db; color: white; }
         .dataTables_wrapper { font-size: 14px; }
         
@@ -169,6 +187,7 @@
 </body>
 
 </html>
+
 
 
 
